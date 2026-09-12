@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Küçük Mucizemizi Beklerken 👶✨</title>
+
+  <!-- Meta & SEO -->
+  <meta name="description"
+    content="Ayşenur & Ersan'ın heyecanlı bebek bekleyişi için hazırlanan dijital anı ve geri sayım sayfası." />
+  <meta name="theme-color" content="#FDFBF7" />
+
+  <!-- Google Fonts: Comfortaa & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Caveat:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Firebase App & Firestore Compat SDK (Tek dosya ve CDN için en uyumlu sürüm) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            babyBlue: {
+              50: '#F0F7FF',
+              100: '#E0EFFF',
+              200: '#BAE0FD',
+              300: '#7DC4FB',
+              400: '#38A4F6',
+              500: '#1586E4',
+            },
+            babyPink: {
+              50: '#FDF2F7',
+              100: '#FCE7F3',
+              200: '#FBCFE8',
+              300: '#F9A8D4',
+              400: '#F472B6',
+              500: '#EC4899',
+            },
+            warmCream: {
+              50: '#FFFEFB',
+              100: '#FDFBF7',
+              200: '#F9F5EC',
+              300: '#F3ECDD',
+            },
+            softMint: {
+              100: '#E6F6F1',
+              200: '#CEEFE3',
+              500: '#34D399',
+            },
+            softYellow: {
+              100: '#FEF9E7',
+              200: '#FDEFC2',
+              500: '#FBBF24',
+            }
+          },
+          fontFamily: {
+            title: ['Comfortaa', 'cursive', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif'],
+            handwriting: ['Caveat', 'cursive'],
+          },
+          boxShadow: {
+            'soft': '0 8px 30px rgba(0, 0, 0, 0.04)',
+            'card': '0 10px 25px -5px rgba(224, 239, 255, 0.6), 0 8px 10px -6px rgba(252, 231, 243, 0.5)',
+            'floating': '0 14px 35px rgba(186, 224, 253, 0.35)',
+            'inner-soft': 'inset 0 2px 4px rgba(0,0,0,0.02)',
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-reverse': 'floatRev 7s ease-in-out infinite',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+            'sparkle': 'sparkle 2s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-10px) rotate(2deg)' },
+            },
+            floatRev: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(8px) rotate(-2deg)' },
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(1.02)' },
+            },
+            sparkle: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(0.8)' },
+              '50%': { opacity: '1', transform: 'scale(1.15)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* iOS ve Mobil Kaydırma İyileştirmeleri */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      touch-action: manipulation;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    /* Özel Pastel Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #FDFBF7;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .glass-card-pastel {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(253, 248, 251, 0.85) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #EC4899;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .custom-range::-webkit-slider-thumb:active {
+      transform: scale(1.15);
+    }
+
+    .custom-range::-moz-range-thumb {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #EC4899;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-[#FAF8F5] text-slate-700 font-body antialiased min-h-screen relative overflow-x-hidden selection:bg-babyPink-200 selection:text-babyPink-500">
+
+  <!-- ========================================== -->
+  <!-- ARKA PLAN DEKORATİF PASTEL IŞIMALARI -->
+  <!-- ========================================== -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+    <!-- Sol Üst Bebe Mavisi Küre -->
+    <div
+      class="absolute -top-24 -left-24 w-80 h-80 sm:w-96 sm:h-96 bg-babyBlue-200/40 rounded-full blur-3xl animate-float-slow">
+    </div>
+    <!-- Sağ Üst Pudra Pembesi Küre -->
+    <div
+      class="absolute -top-16 -right-24 w-80 h-80 sm:w-96 sm:h-96 bg-babyPink-200/45 rounded-full blur-3xl animate-float-reverse">
+    </div>
+    <!-- Orta Yumuşak Krem/Sarı Işıma -->
+    <div
+      class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[34rem] h-[34rem] bg-softYellow-100/60 rounded-full blur-[110px]">
+    </div>
+    <!-- Alt Bebe Mavisi & Pembe Birleşimi -->
+    <div class="absolute bottom-10 -right-20 w-80 h-80 bg-babyBlue-100/50 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-40 -left-20 w-80 h-80 bg-babyPink-100/50 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- SABİT MİNİ ÜST MENÜ & DİLEK BUTONU -->
+  <!-- ========================================== -->
+  <header class="sticky top-0 z-40 px-4 py-3">
+    <div
+      class="max-w-md mx-auto glass-card rounded-full px-4 py-2 flex items-center justify-between shadow-soft border border-white/80">
+      <div class="flex items-center gap-2">
+        <span class="text-xl animate-sparkle">🍼</span>
+        <span
+          class="font-title text-sm font-bold bg-gradient-to-r from-babyBlue-400 via-purple-300 to-babyPink-400 bg-clip-text text-transparent">
+          Mucizemiz Yolda
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="sendLoveBtn" onclick="handleSendLove(event)"
+          class="text-xs font-semibold px-3 py-1.5 rounded-full bg-gradient-to-r from-babyPink-100 via-white to-babyBlue-100 text-slate-700 hover:scale-105 active:scale-95 transition-all shadow-sm flex items-center gap-1.5 border border-white">
+          <span>💖</span>
+          <span>Sevgi Gönder</span>
+          <span id="loveCountDisplay"
+            class="bg-babyPink-400 text-white font-bold px-1.5 py-0.5 rounded-full text-[10px] min-w-[20px] text-center shadow-xs">
+            0
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- ANA İÇERİK KONTEYNERİ (MOBİL ÖNCELİKLİ) -->
+  <!-- ========================================== -->
+  <main class="max-w-md mx-auto px-4 pb-20 pt-2 space-y-6">
+
+    <!-- ========================================== -->
+    <!-- 1. BÖLÜM: KARŞILAMA, İSİMLER & GERİ SAYIM -->
+    <!-- ========================================== -->
+    <section class="text-center pt-2 relative">
+      <!-- Uçuşan Tatlı Süsler -->
+      <div class="absolute top-2 left-2 text-lg animate-float-slow opacity-75">✨</div>
+      <div class="absolute top-4 right-3 text-lg animate-float-reverse opacity-75">⭐</div>
+
+      <!-- Anne & Baba İsim Rozeti -->
+      <div
+        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 shadow-sm border border-pink-100/80 mb-3 backdrop-blur-sm">
+        <span class="w-2 h-2 rounded-full bg-babyPink-400 animate-ping"></span>
+        <!-- İSİMLER -->
+        <span id="parentsNamesDisplay" class="text-xs font-semibold uppercase tracking-wider text-slate-600">
+          Ayşenur & Ersan
+        </span>
+      </div>
+
+      <!-- Ana Başlık -->
+      <h1 class="font-title text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight leading-snug">
+        Küçük Mucizemize <br />
+        <span class="bg-gradient-to-r from-babyBlue-400 via-purple-400 to-babyPink-400 bg-clip-text text-transparent">
+          Kalan Süre
+        </span>
+        👶✨
+      </h1>
+
+      <p class="text-xs sm:text-sm text-slate-500 mt-2 font-normal max-w-xs mx-auto">
+        Aramıza katılacağın o eşsiz günü hepimiz tarifsiz bir heyecan ve sevgiyle bekliyoruz.
+      </p>
+
+      <!-- GERİ SAYIM SAYAÇ KARTLARI -->
+      <div class="mt-6 grid grid-cols-4 gap-2.5">
+        <!-- Gün -->
+        <div
+          class="glass-card rounded-2xl p-3 text-center border border-white shadow-soft transition-transform active:scale-95">
+          <span id="cdDays" class="font-title block text-2xl sm:text-3xl font-bold text-babyBlue-500">--</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-slate-400">GÜN</span>
+        </div>
+        <!-- Saat -->
+        <div
+          class="glass-card rounded-2xl p-3 text-center border border-white shadow-soft transition-transform active:scale-95">
+          <span id="cdHours" class="font-title block text-2xl sm:text-3xl font-bold text-babyPink-400">--</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-slate-400">SAAT</span>
+        </div>
+        <!-- Dakika -->
+        <div
+          class="glass-card rounded-2xl p-3 text-center border border-white shadow-soft transition-transform active:scale-95">
+          <span id="cdMinutes" class="font-title block text-2xl sm:text-3xl font-bold text-purple-400">--</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-slate-400">DAKİKA</span>
+        </div>
+        <!-- Saniye -->
+        <div
+          class="glass-card rounded-2xl p-3 text-center border border-white shadow-soft transition-transform active:scale-95">
+          <span id="cdSeconds" class="font-title block text-2xl sm:text-3xl font-bold text-amber-400">--</span>
+          <span class="text-[10px] sm:text-xs uppercase font-medium tracking-wider text-slate-400">SANİYE</span>
+        </div>
+      </div>
+
+      <!-- Tahmini Doğum Tarihi & İlerleme Barı -->
+      <div class="mt-4 glass-card rounded-2xl p-3.5 border border-white/70 shadow-sm">
+        <div class="flex items-center justify-between text-xs mb-1.5">
+          <span class="text-slate-500 flex items-center gap-1 font-medium">
+            <i data-lucide="calendar-heart" class="w-3.5 h-3.5 text-babyPink-400"></i>
+            Tahmini Kavuşma:
+          </span>
+          <span id="dueDateFormatted" class="font-semibold text-slate-700">Yükleniyor...</span>
+        </div>
+
+        <!-- İlerleme Çubuğu -->
+        <div class="w-full bg-slate-100/80 rounded-full h-2.5 overflow-hidden p-0.5 border border-slate-200/40">
+          <div id="pregnancyProgressBar"
+            class="h-full rounded-full bg-gradient-to-r from-babyBlue-300 via-purple-300 to-babyPink-300 transition-all duration-1000 ease-out"
+            style="width: 40%"></div>
+        </div>
+        <div class="flex justify-between items-center text-[10px] text-slate-400 mt-1">
+          <span>Başlangıç</span>
+          <span id="pregnancyPercentageText" class="font-semibold text-babyPink-400">%40 Tamamlandı</span>
+          <span>Büyük Gün 🎉</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 2. BÖLÜM: BEBEĞİN GELİŞİMİ (HAFTALIK TAKİP) -->
+    <!-- ========================================== -->
+    <section class="space-y-3">
+      <!-- Bölüm Başlığı -->
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center gap-2">
+          <span class="p-1.5 bg-babyBlue-100 text-babyBlue-500 rounded-xl">
+            <i data-lucide="sprout" class="w-4 h-4"></i>
+          </span>
+          <h2 class="font-title text-base font-bold text-slate-800">
+            Bebeğimizin Gelişimi
+          </h2>
+        </div>
+        <!-- Şu Anki Haftaya Dön Butonu -->
+        <button onclick="resetToCurrentWeek()"
+          class="text-[11px] font-semibold text-babyBlue-500 bg-babyBlue-50 hover:bg-babyBlue-100 px-2.5 py-1 rounded-full border border-babyBlue-200 transition-colors">
+          Şu Anki Hafta
+        </button>
+      </div>
+
+      <!-- GELİŞİM KARTI (INTERAKTİF & TATLI) -->
+      <div class="glass-card-pastel rounded-3xl p-5 border border-white shadow-card relative overflow-hidden">
+
+        <!-- Üst Bilgi Rozeti & Hafta Başlığı -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <span
+              class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-white text-slate-500 border border-slate-100 shadow-sm">
+              Gebelikte Bu Hafta
+            </span>
+            <div class="mt-1 flex items-baseline gap-1.5">
+              <span id="currentWeekNumber" class="font-title text-2xl font-bold text-slate-800">16.</span>
+              <span class="font-title text-lg font-semibold text-slate-600">Hafta</span>
+            </div>
+          </div>
+
+          <!-- Haftayı Değiştirme Butonları -->
+          <div class="flex items-center gap-1.5 bg-white/90 p-1 rounded-2xl border border-slate-100 shadow-sm">
+            <button onclick="changeWeek(-1)" aria-label="Önceki Hafta"
+              class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:bg-babyPink-50 active:scale-90 transition-all">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <span id="weekIndicatorMini" class="text-xs font-bold text-slate-700 min-w-[28px] text-center">16</span>
+            <button onclick="changeWeek(1)" aria-label="Sonraki Hafta"
+              class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-600 hover:bg-babyBlue-50 active:scale-90 transition-all">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Meyve / Sebze Büyüklüğü Karşılaştırma Alanı -->
+        <div
+          class="bg-gradient-to-br from-white/95 to-white/70 rounded-2xl p-4 border border-white shadow-sm flex items-center gap-4 relative">
+          <!-- Meyve İkonu / Emoji Yuvası -->
+          <div
+            class="w-20 h-20 rounded-2xl bg-gradient-to-br from-softYellow-100 via-babyPink-50 to-babyBlue-100 flex items-center justify-center text-4xl shadow-inner border border-white flex-shrink-0 relative group">
+            <span id="fruitEmoji" class="transform transition-all duration-300 hover:scale-125">🥑</span>
+            <span class="absolute -bottom-1 -right-1 text-xs">✨</span>
+          </div>
+
+          <!-- Meyve Açıklaması & Boyut Bilgisi -->
+          <div class="flex-1 min-w-0">
+            <span class="text-[11px] font-medium text-slate-400 block">Şu anda yaklaşık olarak:</span>
+            <h3 id="fruitName" class="font-title text-base sm:text-lg font-bold text-slate-800 truncate">
+              Avokado Büyüklüğünde
+            </h3>
+
+            <div class="flex flex-wrap items-center gap-2 mt-1.5 text-[11px] text-slate-600">
+              <span
+                class="bg-babyBlue-50/90 text-babyBlue-600 font-semibold px-2 py-0.5 rounded-md border border-babyBlue-100 flex items-center gap-1">
+                <i data-lucide="ruler" class="w-3 h-3"></i>
+                <span id="babyLength">~12 cm</span>
+              </span>
+              <span
+                class="bg-babyPink-50/90 text-babyPink-500 font-semibold px-2 py-0.5 rounded-md border border-babyPink-100 flex items-center gap-1">
+                <i data-lucide="weight" class="w-3 h-3"></i>
+                <span id="babyWeight">~100 gr</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Haftalık Sevimli Açıklama Kutucuğu -->
+        <div class="mt-3.5 bg-white/70 rounded-2xl p-3.5 border border-white/80">
+          <div class="flex items-start gap-2.5">
+            <span class="text-lg flex-shrink-0 mt-0.5">🌟</span>
+            <div>
+              <h4 class="text-xs font-bold text-slate-700">Bu Haftaki Minik Mucize:</h4>
+              <p id="weekDescription" class="text-xs text-slate-600 leading-relaxed mt-0.5">
+                Minik kalbi her gün litrelerce kan pompalıyor! Artık gözlerini hafifçe hareket ettirebiliyor ve
+                başparmağını emmeye başlamış olabilir.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hafta Kaydırma Çubuğu (Slider) -->
+        <div class="mt-4 pt-2 border-t border-slate-100/80">
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mb-1.5">
+            <span>4. Hafta</span>
+            <span class="text-slate-600 font-semibold text-xs">Haftayı Kaydırarak Keşfet</span>
+            <span>40. Hafta</span>
+          </div>
+          <input type="range" id="weekSlider" min="4" max="40" value="16" oninput="handleSliderChange(this.value)"
+            class="w-full h-2 bg-slate-200/80 rounded-lg appearance-none cursor-pointer custom-range" />
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 3. BÖLÜM: DİJİTAL ZAMAN KAPSÜLÜ (MEKTUPLAR) -->
+    <!-- ========================================== -->
+    <section class="space-y-4 pt-1">
+
+      <!-- Bölüm Başlığı & Açıklama & Canlı Durum Rozeti -->
+      <div class="px-1 flex items-start justify-between gap-2">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="p-1.5 bg-babyPink-100 text-babyPink-500 rounded-xl">
+              <i data-lucide="mail-heart" class="w-4 h-4"></i>
+            </span>
+            <h2 class="font-title text-base font-bold text-slate-800">
+              Dijital Zaman Kapsülü
+            </h2>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Gelecekte okuması için minik bebeğe sevgi dolu bir not bırak! 💌
+          </p>
+        </div>
+
+        <!-- Canlı Veritabanı Durum Rozeti -->
+        <div id="dbStatusBadge"
+          class="flex-shrink-0 mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200 shadow-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+          <span id="dbStatusText">Yerel Mod</span>
+        </div>
+      </div>
+
+      <!-- MEKTUP BIRAKMA FORMU KARTI -->
+      <div class="glass-card rounded-3xl p-5 border border-white shadow-card">
+        <form id="capsuleForm" onsubmit="saveLetter(event)" class="space-y-3.5">
+
+          <!-- Kimden & Yakınlık Derecesi -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">
+              Kimden Yazılıyor? <span class="text-babyPink-400">*</span>
+            </label>
+            <input type="text" id="authorInput" required maxlength="40"
+              placeholder="Örn: Teyzen Merve, Can Dayın, Anneannen..."
+              class="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-2xl bg-white border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-babyBlue-300 focus:border-babyBlue-300 placeholder:text-slate-400 shadow-inner-soft transition-all" />
+          </div>
+
+          <!-- Yakınlık Etiketi Seçici -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">
+              Yakınlık / Rol:
+            </label>
+            <div class="flex flex-wrap gap-1.5" id="roleSelector">
+              <button type="button" onclick="selectRole(this, 'Anne & Baba')"
+                class="role-btn text-[11px] px-2.5 py-1 rounded-xl bg-babyPink-100 text-babyPink-600 border border-babyPink-200 font-medium active:scale-95 transition-all">Anne
+                & Baba</button>
+              <button type="button" onclick="selectRole(this, 'Teyze')"
+                class="role-btn text-[11px] px-2.5 py-1 rounded-xl bg-white text-slate-600 border border-slate-200 font-medium active:scale-95 transition-all">Teyze</button>
+              <button type="button" onclick="selectRole(this, 'Dayı')"
+                class="role-btn text-[11px] px-2.5 py-1 rounded-xl bg-white text-slate-600 border border-slate-200 font-medium active:scale-95 transition-all">Dayı</button>
+              <button type="button" onclick="selectRole(this, 'Amca / Hala')"
+                class="role-btn text-[11px] px-2.5 py-1 rounded-xl bg-white text-slate-600 border border-slate-200 font-medium active:scale-95 transition-all">Amca
+                / Hala</button>
+              <button type="button" onclick="selectRole(this, 'Büyükanne & Dede')"
+                class="role-btn text-[11px] px-2.5 py-1 rounded-xl bg-white text-slate-600 border border-slate-200 font-medium active:scale-95 transition-all">Büyükanne
+                / Dede</button>
+              <button type="button" onclick="selectRole(this, 'Aile Dostu')"
+                class="role-btn text-[11px] px-2.5 py-1 rounded-xl bg-white text-slate-600 border border-slate-200 font-medium active:scale-95 transition-all">Aile
+                Dostu</button>
+            </div>
+            <input type="hidden" id="selectedRoleInput" value="Anne & Baba" />
+          </div>
+
+          <!-- Mektup Mührü / Emoji Seçimi -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">
+              Mektup Mührü Seç:
+            </label>
+            <div class="flex items-center gap-2 overflow-x-auto py-1 px-0.5 no-scrollbar" id="emojiSelector">
+              <button type="button" onclick="selectEmoji(this, '💖')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-babyPink-100 border-2 border-babyPink-400 flex-shrink-0 transition-transform hover:scale-110">💖</button>
+              <button type="button" onclick="selectEmoji(this, '🍼')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-white border border-slate-200 flex-shrink-0 transition-transform hover:scale-110">🍼</button>
+              <button type="button" onclick="selectEmoji(this, '🧸')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-white border border-slate-200 flex-shrink-0 transition-transform hover:scale-110">🧸</button>
+              <button type="button" onclick="selectEmoji(this, '⭐')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-white border border-slate-200 flex-shrink-0 transition-transform hover:scale-110">⭐</button>
+              <button type="button" onclick="selectEmoji(this, '🐣')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-white border border-slate-200 flex-shrink-0 transition-transform hover:scale-110">🐣</button>
+              <button type="button" onclick="selectEmoji(this, '🌈')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-white border border-slate-200 flex-shrink-0 transition-transform hover:scale-110">🌈</button>
+              <button type="button" onclick="selectEmoji(this, '👼')"
+                class="emoji-seal-btn text-lg p-2 rounded-xl bg-white border border-slate-200 flex-shrink-0 transition-transform hover:scale-110">👼</button>
+            </div>
+            <input type="hidden" id="selectedEmojiInput" value="💖" />
+          </div>
+
+          <!-- Mektup Metni -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">
+              Gelecekteki Bebeğe Mesajın: <span class="text-babyPink-400">*</span>
+            </label>
+            <textarea id="messageInput" required rows="3" maxlength="600"
+              placeholder="Seni kucağımıza alacağımız günü sabırsızlıkla bekliyoruz... Dünyamıza neşe ve huzur getireceksin!"
+              class="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-2xl bg-white border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-babyPink-300 focus:border-babyPink-300 placeholder:text-slate-400 shadow-inner-soft transition-all resize-none"></textarea>
+            <div class="flex justify-between items-center text-[10px] text-slate-400 mt-1">
+              <span>Bu mesaj tarayıcıda sonsuza dek saklanır 🔒</span>
+              <span id="charCount">0/600</span>
+            </div>
+          </div>
+
+          <!-- Gönder Butonu -->
+          <button type="submit"
+            class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-babyPink-400 via-purple-400 to-babyBlue-400 text-white font-title font-bold text-sm shadow-md hover:shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-white/40">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Mektubu Kapsüle Kilitle 💌</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- MEKTUPLAR LİSTESİ -->
+      <div class="space-y-3 pt-2">
+        <div class="flex items-center justify-between px-1">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+            <span>Kapsüldeki Mektuplar</span>
+            <span id="letterCountBadge"
+              class="bg-babyPink-100 text-babyPink-600 font-bold px-2 py-0.5 rounded-full text-[10px]">
+              0
+            </span>
+          </h3>
+
+          <!-- Yedekleme / Dışa Aktarma Butonu -->
+          <button onclick="backupLetters()"
+            class="text-[11px] text-slate-500 hover:text-babyBlue-600 flex items-center gap-1 bg-white px-2 py-1 rounded-lg border border-slate-200/60 shadow-xs"
+            title="Mektupları metin dosyası olarak indir">
+            <i data-lucide="download" class="w-3 h-3"></i>
+            <span>Mektupları İndir</span>
+          </button>
+        </div>
+
+        <!-- Kartların Listelendiği Konteyner -->
+        <div id="lettersContainer" class="space-y-3">
+          <!-- Javascript ile dinamik doldurulacaktır -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- ALT ALAN & TATLI DİLEK BİLGİSİ -->
+    <!-- ========================================== -->
+    <footer class="text-center pt-8 pb-4 text-xs text-slate-400 space-y-2">
+      <div class="flex items-center justify-center gap-2">
+        <span class="w-8 h-px bg-slate-200"></span>
+        <span class="text-base">🧸🍼👶</span>
+        <span class="w-8 h-px bg-slate-200"></span>
+      </div>
+      <p class="font-medium text-slate-500">
+        Sevgiyle ve sabırsızlıkla seni bekliyoruz...
+      </p>
+      <p class="text-[11px] text-slate-400">
+        Bu sayfa GitHub Pages üzerinde özenle saklanmaktadır.
+      </p>
+    </footer>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MEKTUP BAŞARIYLA EKLENDİ TOAST BİLDİRİMİ -->
+  <!-- ========================================== -->
+  <div id="toastNotification"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none w-[90%] max-w-sm">
+    <div class="glass-card rounded-2xl p-3.5 shadow-floating border border-white flex items-center gap-3 bg-white/95">
+      <div class="w-10 h-10 rounded-xl bg-babyPink-100 flex items-center justify-center text-xl flex-shrink-0">
+        💌
+      </div>
+      <div class="flex-1">
+        <h4 class="text-xs font-bold text-slate-800">Mektup Kapsüle Eklendi!</h4>
+        <p class="text-[11px] text-slate-500">Bebeğimiz büyüdüğünde bu sevgi dolu notunu okuyacak.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT: TÜM MANTIK VE VERİLER -->
+  <!-- ========================================== -->
+  <script>
+    /* ==========================================================
+       1. KOLAY AYARLAR (CONFIG) - AYŞENUR & ERSAN
+       ========================================================== */
+    const CONFIG = {
+      // Anne ve baba isimleri
+      parentsNames: "Ayşenur & Ersan",
+
+      // Tahmini Doğum Tarihi (Yıl, Ay-1, Gün, Saat)
+      dueDate: new Date(2027, 2, 28, 9, 0, 0), // 28 Mart 2027
+
+      // Hamilelik Başlangıç / Son Adet Tarihi (İlerleme çubuğu ve varsayılan hafta hesabı için)
+      pregnancyStartDate: new Date(2026, 5, 21), // 21 Haziran 2026
+    };
+
+    /* ==========================================================
+       FIREBASE BULUT VERİTABANI AYARLARI (KALICI VERİTABANI)
+       Firebase Console > Project Settings > Web App (</>) kısmından
+       alacağınız değerleri buraya yapıştırın. Boş kaldığında site
+       otomatik olarak yerel tarayıcı hafızasında (localStorage) çalışır.
+       ========================================================== */
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAJ6CW4aoEw7gw4ItEVofSKg7voYZ1vkAk",
+      authDomain: "ae-2027-f1a04.firebaseapp.com",
+      projectId: "ae-2027-f1a04",
+      storageBucket: "ae-2027-f1a04.firebasestorage.app",
+      messagingSenderId: "840804874033",
+      appId: "1:840804874033:web:efeccda1ea8ca8df662210"
+    };
+
+    /* ==========================================================
+       2. 40 HAFTALIK BEBEK GELİŞİMİ VERİ BANKASI (MEYVE / SEBZE)
+       ========================================================== */
+    const WEEKS_DATA = {
+      4: {
+        fruit: "Haşhaş Tohumu 🌱",
+        emoji: "🌱",
+        length: "~0.1 cm",
+        weight: "< 1 gr",
+        description: "Minicik bir tohum boyutunda rahme tutundu. Hücreler hızla bölünüyor ve mucize başlıyor!"
+      },
+      5: {
+        fruit: "Elma Çekirdeği 🍎",
+        emoji: "🍎",
+        length: "~0.2 cm",
+        weight: "< 1 gr",
+        description: "Bebeğin kalbi ilk kez ritmik olarak atmaya başlıyor ve minik damarlar gelişiyor."
+      },
+      6: {
+        fruit: "Tatlı Bezelye 🫛",
+        emoji: "🫛",
+        length: "~0.5 cm",
+        weight: "< 1 gr",
+        description: "Minik kol ve bacak tomurcukları belirmeye başladı. Yüz hatları şekilleniyor."
+      },
+      7: {
+        fruit: "Yaban Mersini 🫐",
+        emoji: "🫐",
+        length: "~1.2 cm",
+        weight: "~1 gr",
+        description: "Beyin hücreleri dakikada yüz binlerce yeni bağlantı kuruyor, minik eller şekilleniyor."
+      },
+      8: {
+        fruit: "Ahududu 🍓",
+        emoji: "🍓",
+        length: "~1.6 cm",
+        weight: "~1.5 gr",
+        description: "Minik el ve ayak parmakları belirginleşiyor. Sürekli küçük sevimli hareketler yapıyor."
+      },
+      9: {
+        fruit: "Yeşil Zeytin 🫒",
+        emoji: "🫒",
+        length: "~2.3 cm",
+        weight: "~2 gr",
+        description: "Kalp kapakçıkları tamamlandı. Artık minik eklemlerini bükebiliyor!"
+      },
+      10: {
+        fruit: "Çilek 🍓",
+        emoji: "🍓",
+        length: "~3.1 cm",
+        weight: "~4 gr",
+        description: "Artık embriyo değil, resmi olarak bir fetüs! Minik tırnakları ve saç kökleri oluşmaya başladı."
+      },
+      11: {
+        fruit: "Brüksel Lahanası 🥬",
+        emoji: "🥬",
+        length: "~4.1 cm",
+        weight: "~7 gr",
+        description: "Ellerini açıp kapatabiliyor ve esneme hareketleri yapıyor."
+      },
+      12: {
+        fruit: "Misket Limonu (Lime) 🍋",
+        emoji: "🍋",
+        length: "~5.4 cm",
+        weight: "~14 gr",
+        description: "Tüm organları yerli yerinde! Refleksleri gelişiyor, parmağını ağzına götürebiliyor."
+      },
+      13: {
+        fruit: "Şeftali 🍑",
+        emoji: "🍑",
+        length: "~7.4 cm",
+        weight: "~23 gr",
+        description: "İkinci trimestere hoş geldiniz! Ses telleri oluşuyor ve parmak izleri belirginleşiyor."
+      },
+      14: {
+        fruit: "Limon 🍋",
+        emoji: "🍋",
+        length: "~8.7 cm",
+        weight: "~43 gr",
+        description: "Yüz kasları aktif; gülümsüyor, kaş çatıyor ve mimikler deniyor!"
+      },
+      15: {
+        fruit: "Elma 🍎",
+        emoji: "🍎",
+        length: "~10.1 cm",
+        weight: "~70 gr",
+        description: "Işığa karşı duyarlı hale geldi. Karnın dışındaki parlak ışıkları fark edebiliyor."
+      },
+      16: {
+        fruit: "Avokado 🥑",
+        emoji: "🥑",
+        length: "~12 cm",
+        weight: "~100 gr",
+        description: "Minik kalbi her gün litrelerce kan pompalıyor! Dışarıdan anne-babasının sesini yavaş yavaş duymaya başladı."
+      },
+      17: {
+        fruit: "Armut 🍐",
+        emoji: "🍐",
+        length: "~13 cm",
+        weight: "~140 gr",
+        description: "İskeleti kıkırdaktan sert kemik yapısına dönüşüyor. Yağ dokuları oluşmaya başladı."
+      },
+      18: {
+        fruit: "Dolmalık Biber 🫑",
+        emoji: "🫑",
+        length: "~14.2 cm",
+        weight: "~190 gr",
+        description: "Kulakları tamamen işitiyor. Annesinin ninilerini ve kalp atışını en sevdiği melodi olarak dinliyor."
+      },
+      19: {
+        fruit: "Büyük Domates 🍅",
+        emoji: "🍅",
+        length: "~15.3 cm",
+        weight: "~240 gr",
+        description: "Bebeğin cildi verniks adı verilen koruyucu krem tabakasıyla kaplanıyor."
+      },
+      20: {
+        fruit: "Muz 🍌",
+        emoji: "🍌",
+        length: "~25 cm",
+        weight: "~300 gr",
+        description: "Yarı yola ulaşıldı! Artık tekmelerini ve taklalarını karnınızda belirgin şekilde hissedebilirsiniz."
+      },
+      21: {
+        fruit: "Havuç 🥕",
+        emoji: "🥕",
+        length: "~27 cm",
+        weight: "~360 gr",
+        description: "Tat alma duyuları gelişti. Annesinin yediği lezzetlerin tadını amniyotik sıvıdan alabiliyor."
+      },
+      22: {
+        fruit: "Hindistan Cevizi 🥥",
+        emoji: "🥥",
+        length: "~28 cm",
+        weight: "~430 gr",
+        description: "Kaşları ve kirpikleri tamamen oluştu. Minik bir oyuncak bebek gibi görünüyor!"
+      },
+      23: {
+        fruit: "Büyük Mango 🥭",
+        emoji: "🥭",
+        length: "~29 cm",
+        weight: "~500 gr",
+        description: "Yarım kilo sınırını aştı! Hıçkırıkları dışarıdan hafif ritmik kıpırtılar olarak hissedilebilir."
+      },
+      24: {
+        fruit: "Mısır Koçanı 🌽",
+        emoji: "🌽",
+        length: "~30 cm",
+        weight: "~600 gr",
+        description: "Akciğerlerinde hava kesecikleri gelişiyor. Yüz hatları tamamen ailesine benzemeye başladı."
+      },
+      25: {
+        fruit: "Karnabahar 🥦",
+        emoji: "🥦",
+        length: "~34 cm",
+        weight: "~660 gr",
+        description: "Seslere tepki verip karnın içinde kıpırdıyor. Tanıdık sesler onu sakinleştiriyor."
+      },
+      26: {
+        fruit: "Kabak 🥒",
+        emoji: "🥒",
+        length: "~35 cm",
+        weight: "~760 gr",
+        description: "Gözlerini ilk kez aralamaya başladı. Düzenli uyku ve uyanıklık saatleri var."
+      },
+      27: {
+        fruit: "Brokoli 🥦",
+        emoji: "🥦",
+        length: "~37 cm",
+        weight: "~875 gr",
+        description: "3. ve son trimestere adım atıldı! Beyin kıvrımları hızla gelişiyor."
+      },
+      28: {
+        fruit: "Büyük Patlıcan 🍆",
+        emoji: "🍆",
+        length: "~38 cm",
+        weight: "~1000 gr",
+        description: "1 kilogram oldu! Rüya gördüğü REM uykusu fazına geçebiliyor."
+      },
+      29: {
+        fruit: "Balkabağı (Küçük) 🎃",
+        emoji: "🎃",
+        length: "~39 cm",
+        weight: "~1150 gr",
+        description: "Kemikleri güçleniyor, minik tekmeleri her zamankinden daha enerjik ve güçlü!"
+      },
+      30: {
+        fruit: "Lahana 🥬",
+        emoji: "🥬",
+        length: "~40 cm",
+        weight: "~1300 gr",
+        description: "Işık ve gölgeyi ayırt edebiliyor, elleriyle ayak parmaklarını tutmayı çok seviyor."
+      },
+      31: {
+        fruit: "Ananas 🍍",
+        emoji: "🍍",
+        length: "~41 cm",
+        weight: "~1500 gr",
+        description: "5 duyu organının tamamı aktif çalışıyor. Kafasını bir yandan diğer yana çevirebiliyor."
+      },
+      32: {
+        fruit: "Kavun (Tatlı) 🍈",
+        emoji: "🍈",
+        length: "~42 cm",
+        weight: "~1700 gr",
+        description: "Tırnakları parmak uçlarına kadar uzadı. Doğum pozisyonuna doğru yavaş yavaş dönüyor."
+      },
+      33: {
+        fruit: "Kereviz 🌿",
+        emoji: "🌿",
+        length: "~44 cm",
+        weight: "~1900 gr",
+        description: "Bağışıklık sistemi güçleniyor, anneden antikorlar almaya devam ediyor."
+      },
+      34: {
+        fruit: "Bal Kabağı 🎃",
+        emoji: "🎃",
+        length: "~45 cm",
+        weight: "~2150 gr",
+        description: "2 kiloyu geride bıraktı! Artık doğsa bile kendi kendine nefes alabilecek kadar olgun."
+      },
+      35: {
+        fruit: "Kavun 🍈",
+        emoji: "🍈",
+        length: "~46 cm",
+        weight: "~2400 gr",
+        description: "Böbrekleri ve karaciğeri tam kapasiteyle çalışıyor. Tombiş yanakları belirdi!"
+      },
+      36: {
+        fruit: "Papaya 🥭",
+        emoji: "🥭",
+        length: "~47 cm",
+        weight: "~2600 gr",
+        description: "Günde yaklaşık 30 gram yağ depoluyor, kucağa alınacak tombul bir melek oluyor."
+      },
+      37: {
+        fruit: "Pazı Demeti 🥬",
+        emoji: "🥬",
+        length: "~48 cm",
+        weight: "~2850 gr",
+        description: "Erken doğum riski bitti, artık 'erken vadeli' kabul ediliyor. Her an kapıyı çalabilir!"
+      },
+      38: {
+        fruit: "Kış Kabağı 🎃",
+        emoji: "🎃",
+        length: "~49 cm",
+        weight: "~3000 gr",
+        description: "Kavrama refleksi o kadar güçlü ki, doğduğunda parmağınızı sımsıkı tutacak."
+      },
+      39: {
+        fruit: "Büyük Karpuz 🍉",
+        emoji: "🍉",
+        length: "~50 cm",
+        weight: "~3250 gr",
+        description: "Gelişimi tamamen tamamlandı. Minik mucize artık bavulunu topladı, geliş gününü seçiyor!"
+      },
+      40: {
+        fruit: "Tatlı Karpuz 🍉",
+        emoji: "🍉",
+        length: "~51 cm",
+        weight: "~3400 gr",
+        description: "Büyük gün geldi çattı! Ailenin en tatlı, en minik yeni üyesi kollarınıza gelmek üzere! 🎉"
+      }
+    };
+
+    /* ==========================================================
+       3. SAYFA DURUMU (STATE)
+       ========================================================== */
+    let currentActiveWeek = 16;
+    let actualCalculatedWeek = 16;
+
+    /* ==========================================================
+       4. GERİ SAYIM & GEBELİK İLERLEMESİ MOTORU
+       ========================================================== */
+    function initCountdown() {
+      // İsimleri göster
+      document.getElementById("parentsNamesDisplay").innerText = CONFIG.parentsNames;
+
+      // Tarihi biçimlendir
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      document.getElementById("dueDateFormatted").innerText = CONFIG.dueDate.toLocaleDateString('tr-TR', options);
+
+      // İlerleme yüzdesini ve güncel haftayı hesapla
+      calculatePregnancyStats();
+
+      // Sayaç döngüsünü başlat
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+
+    function calculatePregnancyStats() {
+      const now = new Date();
+      const start = CONFIG.pregnancyStartDate;
+      const end = CONFIG.dueDate;
+
+      const totalDuration = end - start;
+      const elapsed = now - start;
+
+      let percent = Math.round((elapsed / totalDuration) * 100);
+      percent = Math.max(0, Math.min(100, percent));
+
+      // Haftayı hesapla (ortalama 280 gün tam gebelik)
+      const diffDays = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+      let calcWeek = Math.floor(diffDays / 7) + 1;
+      calcWeek = Math.max(4, Math.min(40, calcWeek));
+
+      actualCalculatedWeek = calcWeek;
+      currentActiveWeek = calcWeek;
+
+      // Progress bar ve metin güncellemesi
+      document.getElementById("pregnancyProgressBar").style.width = `${percent}%`;
+      document.getElementById("pregnancyPercentageText").innerText = `%${percent} Tamamlandı (${calcWeek}. Hafta)`;
+
+      // Slider değerini ve arayüzü güncelle
+      document.getElementById("weekSlider").value = currentActiveWeek;
+      renderWeekData(currentActiveWeek);
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = CONFIG.dueDate - now;
+
+      if (diff <= 0) {
+        document.getElementById("cdDays").innerText = "0";
+        document.getElementById("cdHours").innerText = "0";
+        document.getElementById("cdMinutes").innerText = "0";
+        document.getElementById("cdSeconds").innerText = "0";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("cdDays").innerText = days;
+      document.getElementById("cdHours").innerText = String(hours).padStart(2, '0');
+      document.getElementById("cdMinutes").innerText = String(minutes).padStart(2, '0');
+      document.getElementById("cdSeconds").innerText = String(seconds).padStart(2, '0');
+    }
+
+    /* ==========================================================
+       5. HAFTALIK GELİŞİM ETKİLEŞİMİ
+       ========================================================== */
+    function renderWeekData(weekNum) {
+      const data = WEEKS_DATA[weekNum] || WEEKS_DATA[16];
+
+      document.getElementById("currentWeekNumber").innerText = `${weekNum}.`;
+      document.getElementById("weekIndicatorMini").innerText = weekNum;
+      document.getElementById("fruitEmoji").innerText = data.emoji;
+      document.getElementById("fruitName").innerText = data.fruit;
+      document.getElementById("babyLength").innerText = data.length;
+      document.getElementById("babyWeight").innerText = data.weight;
+      document.getElementById("weekDescription").innerText = data.description;
+    }
+
+    function changeWeek(delta) {
+      let newWeek = currentActiveWeek + delta;
+      if (newWeek < 4) newWeek = 4;
+      if (newWeek > 40) newWeek = 40;
+
+      currentActiveWeek = newWeek;
+      document.getElementById("weekSlider").value = newWeek;
+      renderWeekData(newWeek);
+    }
+
+    function handleSliderChange(val) {
+      currentActiveWeek = parseInt(val, 10);
+      renderWeekData(currentActiveWeek);
+    }
+
+    function resetToCurrentWeek() {
+      currentActiveWeek = actualCalculatedWeek;
+      document.getElementById("weekSlider").value = actualCalculatedWeek;
+      renderWeekData(actualCalculatedWeek);
+
+      // Tatlı bir titreşim hissi
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(50);
+      }
+    }
+
+    /* ==========================================================
+       6. ZAMAN KAPSÜLÜ FORMU VE SEÇİCİLER
+       ========================================================== */
+    function selectRole(btn, roleName) {
+      document.querySelectorAll(".role-btn").forEach(b => {
+        b.classList.remove("bg-babyPink-100", "text-babyPink-600", "border-babyPink-200");
+        b.classList.add("bg-white", "text-slate-600", "border-slate-200");
+      });
+      btn.classList.remove("bg-white", "text-slate-600", "border-slate-200");
+      btn.classList.add("bg-babyPink-100", "text-babyPink-600", "border-babyPink-200");
+      document.getElementById("selectedRoleInput").value = roleName;
+    }
+
+    function selectEmoji(btn, emojiChar) {
+      document.querySelectorAll(".emoji-seal-btn").forEach(b => {
+        b.classList.remove("border-2", "border-babyPink-400", "bg-babyPink-100");
+        b.classList.add("border", "border-slate-200", "bg-white");
+      });
+      btn.classList.remove("border", "border-slate-200", "bg-white");
+      btn.classList.add("border-2", "border-babyPink-400", "bg-babyPink-100");
+      document.getElementById("selectedEmojiInput").value = emojiChar;
+    }
+
+    // Karakter Sayacı
+    const messageInput = document.getElementById("messageInput");
+    const charCount = document.getElementById("charCount");
+    messageInput.addEventListener("input", () => {
+      charCount.innerText = `${messageInput.value.length}/600`;
+    });
+
+    /* ==========================================================
+       7. VERİTABANI MOTORU (FIREBASE BULUT & LOCALSTORAGE YEDEK)
+       ========================================================== */
+    const STORAGE_KEY = "baby_time_capsule_letters_v1";
+    const LOVE_STORAGE_KEY = "baby_love_count_v1";
+
+    let db = null;
+    let isFirebaseLive = false;
+    let currentLettersList = [];
+
+    // Varsayılan örnek mektuplar (Sayfa ilk açıldığında boş durmasın diye)
+    const DEFAULT_LETTERS = [
+      {
+        id: "demo-1",
+        author: "Teyzen Merve",
+        role: "Teyze",
+        seal: "💖",
+        message: "Canım bebeğim, ailene ve dünyamıza hoş geldin demeye çok az kaldı! Seni şimdiden kucağıma alıp koklamak için sabırsızlanıyorum. Dünyanın en şanslı teyzesiyim!",
+        date: "Bugün",
+        likes: 3
+      },
+      {
+        id: "demo-2",
+        author: "Can Dayın",
+        role: "Dayı",
+        seal: "🧸",
+        message: "Aslan parçası / güzeller güzeli prenses! Büyüdüğünde sana ilk bisikletini ben alacağım, birlikte parklarda koşacağız. Seni çok seviyoruz!",
+        date: "Dün",
+        likes: 2
+      }
+    ];
+
+    function initDatabaseEngine() {
+      const hasValidKeys = FIREBASE_CONFIG.apiKey &&
+        !FIREBASE_CONFIG.apiKey.includes("BURAYA") &&
+        FIREBASE_CONFIG.projectId &&
+        !FIREBASE_CONFIG.projectId.includes("BURAYA");
+
+      if (hasValidKeys && typeof firebase !== 'undefined') {
+        try {
+          if (!firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+          }
+          db = firebase.firestore();
+          isFirebaseLive = true;
+          updateStatusBadge(true);
+          setupFirebaseListeners();
+          return;
+        } catch (err) {
+          console.warn("Firebase başlatılamadı, yerel hafızaya geçiliyor:", err);
+        }
+      }
+
+      // Fallback: Yerel Hafıza (LocalStorage)
+      fallbackToLocal();
+    }
+
+    function updateStatusBadge(isLive) {
+      const badge = document.getElementById("dbStatusBadge");
+      const text = document.getElementById("dbStatusText");
+      if (!badge || !text) return;
+
+      if (isLive) {
+        badge.className = "flex-shrink-0 mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 shadow-xs";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span><span>Bulut Canlı (Kalıcı)</span>`;
+      } else {
+        badge.className = "flex-shrink-0 mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 shadow-xs";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>Yerel Mod</span>`;
+      }
+    }
+
+    function setupFirebaseListeners() {
+      // 1. Canlı Mektupları Dinle (Realtime Listener)
+      db.collection("letters").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        const letters = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          let dateStr = "Yeni";
+          if (data.createdAt && typeof data.createdAt.toDate === "function") {
+            dateStr = data.createdAt.toDate().toLocaleDateString("tr-TR", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+          } else if (data.date) {
+            dateStr = data.date;
+          }
+          letters.push({
+            id: doc.id,
+            ...data,
+            date: dateStr
+          });
+        });
+        currentLettersList = letters;
+        renderLetters(letters);
+      }, (error) => {
+        console.warn("Firebase mektup dinleme hatası:", error);
+        fallbackToLocal();
+      });
+
+      // 2. Canlı Sevgi Sayacını Dinle
+      db.collection("stats").doc("love").onSnapshot((doc) => {
+        if (doc.exists && typeof doc.data().count === "number") {
+          updateLoveDisplay(doc.data().count);
+        } else {
+          updateLoveDisplay(0);
+        }
+      });
+
+      // 3. Genel Ayarları Dinle (İsim veya tarih Firestore'dan güncellenirse otomatik yansır)
+      db.collection("settings").doc("general").onSnapshot((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.parentsNames) {
+            document.getElementById("parentsNamesDisplay").innerText = data.parentsNames;
+          }
+          if (data.dueDate) {
+            const newDate = data.dueDate.toDate ? data.dueDate.toDate() : new Date(data.dueDate);
+            CONFIG.dueDate = newDate;
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById("dueDateFormatted").innerText = CONFIG.dueDate.toLocaleDateString('tr-TR', options);
+            calculatePregnancyStats();
+          }
+        }
+      });
+    }
+
+    function fallbackToLocal() {
+      isFirebaseLive = false;
+      updateStatusBadge(false);
+      currentLettersList = getLocalLetters();
+      renderLetters(currentLettersList);
+
+      const localLove = parseInt(localStorage.getItem(LOVE_STORAGE_KEY) || "0", 10);
+      updateLoveDisplay(localLove);
+    }
+
+    function getLocalLetters() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_LETTERS));
+        return DEFAULT_LETTERS;
+      }
+      try {
+        return JSON.parse(stored);
+      } catch (e) {
+        return DEFAULT_LETTERS;
+      }
+    }
+
+    /* ==========================================================
+       8. MEKTUP EKLEME / BEĞENME / SİLME İŞLEMLERİ
+       ========================================================== */
+    async function saveLetter(e) {
+      e.preventDefault();
+
+      const author = document.getElementById("authorInput").value.trim();
+      const message = document.getElementById("messageInput").value.trim();
+      const role = document.getElementById("selectedRoleInput").value;
+      const seal = document.getElementById("selectedEmojiInput").value;
+
+      if (!author || !message) return;
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Kaydediliyor...</span> 💌`;
+
+      try {
+        if (isFirebaseLive && db) {
+          // Firebase Firestore'a Kaydet
+          await db.collection("letters").add({
+            author,
+            role,
+            seal,
+            message,
+            likes: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } else {
+          // Yerel Hafızaya (LocalStorage) Kaydet
+          const now = new Date();
+          const dateStr = now.toLocaleDateString("tr-TR", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+          const newLetter = {
+            id: "local_" + Date.now(),
+            author,
+            role,
+            seal,
+            message,
+            date: dateStr,
+            likes: 0
+          };
+          const letters = getLocalLetters();
+          letters.unshift(newLetter);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(letters));
+          currentLettersList = letters;
+          renderLetters(letters);
+        }
+
+        // Formu temizle
+        document.getElementById("capsuleForm").reset();
+        document.getElementById("charCount").innerText = "0/600";
+        selectEmoji(document.querySelector(".emoji-seal-btn"), "💖");
+
+        // Kutlama konfetisi ve bildirimi
+        triggerConfetti();
+        showToast();
+
+      } catch (err) {
+        console.error("Mektup kaydedilirken hata oluştu:", err);
+        alert("Mektup kaydedilirken bir sorun oluştu. Lütfen tekrar deneyin.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    }
+
+    function renderLetters(letters) {
+      const container = document.getElementById("lettersContainer");
+      document.getElementById("letterCountBadge").innerText = letters.length;
+
+      if (!letters || letters.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8 bg-white/60 rounded-3xl border border-dashed border-slate-200 p-6">
+            <span class="text-3xl block mb-2">📭</span>
+            <p class="text-xs font-semibold text-slate-600">Henüz mektup eklenmedi.</p>
+            <p class="text-[11px] text-slate-400 mt-1">İlk sevgi dolu notu yukarıdaki formdan siz bırakın!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = letters.map(letter => `
+        <div class="glass-card rounded-2xl p-4 border border-white/90 shadow-sm relative overflow-hidden transition-all duration-300 hover:shadow-md">
+          <!-- Üst Bar: İsim, Rol ve Mühür -->
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-babyPink-100 to-babyBlue-100 flex items-center justify-center text-lg flex-shrink-0 border border-white shadow-xs">
+                ${letter.seal || '💖'}
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-slate-800 leading-tight">${escapeHtml(letter.author)}</h4>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    ${escapeHtml(letter.role || 'Yakını')}
+                  </span>
+                  <span class="text-[10px] text-slate-400">• ${letter.date || 'Tarih yok'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Silme Butonu -->
+            <button 
+              onclick="deleteLetter('${letter.id}')" 
+              class="text-slate-300 hover:text-rose-400 p-1 rounded-lg transition-colors"
+              title="Mektubu Sil"
+            >
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Mektup İçeriği -->
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-1 pt-1 font-normal whitespace-pre-line border-l-2 border-babyPink-200/80 my-2">
+            ${escapeHtml(letter.message)}
+          </p>
+
+          <!-- Alt Kısım: Kalp Beğeni Etkileşimi -->
+          <div class="flex items-center justify-end pt-1">
+            <button 
+              onclick="likeLetter('${letter.id}')" 
+              class="inline-flex items-center gap-1 text-[11px] font-semibold text-rose-500 hover:bg-rose-50 px-2 py-1 rounded-full border border-rose-100 active:scale-90 transition-transform"
+            >
+              <span>❤️</span>
+              <span id="likes_${letter.id}">${letter.likes || 0}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    async function likeLetter(id) {
+      sendHeartBurst(null, 6);
+
+      if (isFirebaseLive && db) {
+        try {
+          await db.collection("letters").doc(id).update({
+            likes: firebase.firestore.FieldValue.increment(1)
+          });
+        } catch (err) {
+          console.error("Beğeni güncellenemedi:", err);
+        }
+      } else {
+        const letters = getLocalLetters();
+        const target = letters.find(l => l.id === id);
+        if (target) {
+          target.likes = (target.likes || 0) + 1;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(letters));
+          const el = document.getElementById(`likes_${id}`);
+          if (el) el.innerText = target.likes;
+        }
+      }
+    }
+
+    async function deleteLetter(id) {
+      if (!confirm("Bu mektubu zaman kapsülünden kaldırmak istediğinize emin misiniz?")) {
+        return;
+      }
+
+      if (isFirebaseLive && db) {
+        try {
+          await db.collection("letters").doc(id).delete();
+        } catch (err) {
+          console.error("Mektup silinemedi:", err);
+          alert("Mektup silinirken bir hata oluştu.");
+        }
+      } else {
+        let letters = getLocalLetters();
+        letters = letters.filter(l => l.id !== id);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(letters));
+        currentLettersList = letters;
+        renderLetters(letters);
+      }
+    }
+
+    // Sevgi Gönder Butonu Mantığı
+    function handleSendLove(e) {
+      sendHeartBurst(e, 25);
+
+      if (isFirebaseLive && db) {
+        db.collection("stats").doc("love").set({
+          count: firebase.firestore.FieldValue.increment(1)
+        }, { merge: true });
+      } else {
+        let count = parseInt(localStorage.getItem(LOVE_STORAGE_KEY) || "0", 10);
+        count++;
+        localStorage.setItem(LOVE_STORAGE_KEY, count);
+        updateLoveDisplay(count);
+      }
+    }
+
+    function updateLoveDisplay(count) {
+      const display = document.getElementById("loveCountDisplay");
+      if (display) {
+        display.innerText = count.toLocaleString('tr-TR');
+      }
+    }
+
+    // Mektupları Metin Dosyası Olarak İndir (Albüm / Hatıra Yedekleme)
+    function backupLetters() {
+      if (!currentLettersList || currentLettersList.length === 0) {
+        alert("İndirilecek mektup bulunmuyor.");
+        return;
+      }
+
+      let content = `=== AYŞENUR & ERSAN - BEBEĞİMİZE MEKTUPLAR (ZAMAN KAPSÜLÜ) ===\n`;
+      content += `Oluşturulma Tarihi: ${new Date().toLocaleDateString('tr-TR')}\n`;
+      content += `Toplam Mektup Sayısı: ${currentLettersList.length}\n\n`;
+
+      currentLettersList.forEach((l, idx) => {
+        content += `---------------------------------------------------\n`;
+        content += `[${idx + 1}] KİMDEN: ${l.author} (${l.role || 'Ailesi'})\n`;
+        content += `TARİH: ${l.date || 'Belirtilmedi'}\n`;
+        content += `MÜHÜR: ${l.seal || '💖'} | BEĞENİ: ${l.likes || 0}\n`;
+        content += `MESAJ:\n${l.message}\n`;
+        content += `---------------------------------------------------\n\n`;
+      });
+
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `aysenur-ersan-bebek-mektuplari-${new Date().toISOString().slice(0, 10)}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    /* ==========================================================
+       9. GÖRSEL EFEKTLER (KONFETİ & KALP PATLAMASI)
+       ========================================================== */
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.7 },
+          colors: ['#BAE0FD', '#FBCFE8', '#FDEFC2', '#34D399', '#EC4899']
+        });
+      }
+    }
+
+    function sendHeartBurst(e, count = 20) {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: count,
+          spread: 60,
+          origin: { y: 0.2 },
+          shapes: ['circle'],
+          colors: ['#EC4899', '#F472B6', '#FBCFE8', '#BAE0FD']
+        });
+      }
+    }
+
+    function showToast() {
+      const toast = document.getElementById("toastNotification");
+      if (!toast) return;
+      toast.classList.remove("translate-y-24", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+
+      setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-24", "opacity-0");
+      }, 3500);
+    }
+
+    // XSS Koruması
+    function escapeHtml(string) {
+      if (!string) return '';
+      return String(string)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    /* ==========================================================
+       10. SAYFA YÜKLENDİĞİNDE BAŞLAT
+       ========================================================== */
+    window.addEventListener("DOMContentLoaded", () => {
+      initCountdown();
+      initDatabaseEngine();
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+
+</html>
