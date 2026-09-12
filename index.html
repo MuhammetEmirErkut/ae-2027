@@ -620,11 +620,11 @@
       // Anne ve baba isimleri
       parentsNames: "Ayşenur & Ersan",
 
-      // Tahmini Doğum Tarihi (Yıl, Ay-1, Gün, Saat)
-      dueDate: new Date(2027, 2, 28, 9, 0, 0), // 28 Mart 2027
+      // Tahmini Doğum Tarihi (Yıl, Ay-1, Gün, Saat) - (18. haftaya göre yaklaşık 15 Şubat 2027)
+      dueDate: new Date(2027, 1, 15, 9, 0, 0), // 15 Şubat 2027
 
-      // Hamilelik Başlangıç / Son Adet Tarihi (İlerleme çubuğu ve varsayılan hafta hesabı için)
-      pregnancyStartDate: new Date(2026, 5, 21), // 21 Haziran 2026
+      // Hamilelik Başlangıç / Son Adet Tarihi (Şu an 18. haftada olması için 11 Mayıs 2026)
+      pregnancyStartDate: new Date(2026, 4, 11), // 11 Mayıs 2026 (0-indexed Ay: 4 = Mayıs)
     };
 
     /* ==========================================================
@@ -910,8 +910,8 @@
     /* ==========================================================
        3. SAYFA DURUMU (STATE)
        ========================================================== */
-    let currentActiveWeek = 16;
-    let actualCalculatedWeek = 16;
+    let currentActiveWeek = 18;
+    let actualCalculatedWeek = 18;
 
     /* ==========================================================
        4. GERİ SAYIM & GEBELİK İLERLEMESİ MOTORU
